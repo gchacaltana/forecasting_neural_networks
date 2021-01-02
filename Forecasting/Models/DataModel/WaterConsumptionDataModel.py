@@ -1,3 +1,7 @@
+# !/usr/bin/env python
+# -*- coding: utf-8 -*-
+__author__ = "Gonzalo Chacaltana Buleje <gchacaltanab@outlook.com>"
+
 from Forecasting.Settings.DBConnect import DBConnect
 
 class WaterConsumptionDataModel(object):
