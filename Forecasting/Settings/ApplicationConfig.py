@@ -1,8 +1,7 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
 __author__ = "Gonzalo Chacaltana Buleje <gchacaltanab@outlook.com>"
-import socket
-import os
+import socket, os
 from dotenv import load_dotenv
 
 class ApplicationConfig(object):

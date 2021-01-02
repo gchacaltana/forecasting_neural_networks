@@ -1,3 +1,6 @@
+# !/usr/bin/env python
+# -*- coding: utf-8 -*-
+__author__ = "Gonzalo Chacaltana Buleje <gchacaltanab@outlook.com>"
 from Forecasting.Settings.ApplicationConfig import ApplicationConfig
 import mysql.connector
 import sys
