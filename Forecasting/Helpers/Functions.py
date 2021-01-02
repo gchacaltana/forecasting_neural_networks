@@ -1,5 +1,6 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
+__author__ = "Gonzalo Chacaltana Buleje <gchacaltanab@outlook.com>"
 from datetime import datetime
 import pytz
 import pandas as pd
