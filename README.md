@@ -51,13 +51,21 @@ Ejemplo de estructura de información.
 ## Configuración Red Neuronal
 
     Creamos modelo de red neuronal feed forward.
-    *Arquitectura:* 
+    **Arquitectura:* *
         01 capa oculta con "n" neuronas (ingresadas por consola)
         01 neurona de salida.
-    *Función de activación:* Tangente Hiperbólica.(para valores normalizados -1 a 1)
-    *Optimizador:* Adam
+    **Función de activación:** Tangente Hiperbólica.(para valores normalizados -1 a 1)
+    **Optimizador:** Adam
     *Métrica de Pérdida:* (Loss) Error Absoluto Medio
     Para calcular el acuracy, se utilizará  Error Cuadrático Medio (MSE)
+
+## Requisitos
+
+    * numpy 1.19.3
+    * pandas 1.0.1   
+    * Keras 2.4.3
+    * tensorflow 2.4.0
+    * scikit-learn 0.22.1
 
 ## Ejecución
 
