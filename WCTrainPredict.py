@@ -1,8 +1,8 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Clase para entrenar modelo de redes neuronales y predecir el consumo
-de agua mensual de una vivienda.
+Clase para entrenar modelo de redes neuronales y predecir el consumo mensual de agua potable
+de una vivienda.
 """
 __author__ = "Gonzalo Chacaltana Buleje <gchacaltanab@outlook.com>"
 
@@ -13,7 +13,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from keras.layers import Dense, Activation, Flatten
 from sklearn.preprocessing import MinMaxScaler
 from keras.models import Sequential
-import numpy as np  # pip install numpy==1.19.3
+import numpy as np
 import pandas as pd
 import matplotlib.pylab as plt
 import sys
