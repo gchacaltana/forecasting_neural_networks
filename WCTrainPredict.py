@@ -167,11 +167,11 @@ class WCTrainPredict(object):
         self.matrix_cols, self.matrix_cols_names = list(), list()
         self.set_predictors_columns_matrix()
         self.set_target_column_matrix()
-        agg = pd.concat(self.matrix_cols, axis=1)
-        agg.columns = self.matrix_cols_names
+        matrix = pd.concat(self.matrix_cols, axis=1)
+        matrix.columns = self.matrix_cols_names
         # Elimina valores perdidos
-        agg.dropna(inplace=True)
-        return agg
+        matrix.dropna(inplace=True)
+        return matrix
 
     def set_predictors_columns_matrix(self):
         """
