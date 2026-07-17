@@ -22,7 +22,7 @@ class Console():
     def outline(content: str, logging: Logger | None = None) -> None:
         now_utc = datetime.now()
         now = now_utc.astimezone(timezone)
-        outline = "{} - {}".format(now.strftime("%Y-%m-%d %H:%M:%S"), content)
+        outline = f"{now.strftime('%Y-%m-%d %H:%M:%S')} - {content}"
         print(outline)
         if logging:
             logging.info(outline)
@@ -30,9 +30,9 @@ class Console():
     @staticmethod
     def highlight(message: str) -> None:
         os.system("clear")
-        print("\n{}".format(COLOR_YELLOW + message + END_COLOR))
-        print("\n{}\n".format(COLOR_YELLOW + "*"*50 + END_COLOR))
+        print(f"\n{COLOR_YELLOW}{message}{END_COLOR}")
+        print(f"\n{COLOR_YELLOW}{'*' * 50}{END_COLOR}\n")
 
     @staticmethod
     def stop_continue(message: str) -> None:
-        input("\n{}\n".format(COLOR_GREEN + message + END_COLOR))
+        input(f"\n{COLOR_GREEN}{message}{END_COLOR}\n")

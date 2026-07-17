@@ -87,11 +87,11 @@ class WCTrainPredict(object):
         """
         Construir dataframe de consumo de agua
         """
-        Console.highlight("2. CONSUMOS MENSUALES DE AGUA DEL DEPARTAMENTO {}".format(self.apartment))
+        Console.highlight(f"2. CONSUMOS MENSUALES DE AGUA DEL DEPARTAMENTO {self.apartment}")
         self.get_dataset_water_consumption()
         self.set_dataframe_wc()
         self.show_dataframe_wc()
-        Console.stop_continue("[Ver consumos del {}]".format(self.apartment))
+        Console.stop_continue(f"[Ver consumos del {self.apartment}]")
         print(self.df)
         Console.stop_continue("[Enter para continuar]")
 
@@ -102,8 +102,10 @@ class WCTrainPredict(object):
         wcdm = WaterConsumptionDataModel()
         self.wm_consumptions = wcdm.get_wm_month_consumption_by_property(self.building, self.apartment)
         if len(self.wm_consumptions) == 0:
-            raise Exception("El departamento {} del edificio {} no tiene registros de consumos mensuales.".format(
-                self.apartment, self.building))
+            raise Exception(
+                f"El departamento {self.apartment} del edificio {self.building} "
+                "no tiene registros de consumos mensuales."
+            )
     
     def set_dataframe_wc(self) -> None:
         """
@@ -117,11 +119,9 @@ class WCTrainPredict(object):
         """
         Devolver información del dataset
         """
-        print("Observaciones: {} consumos mensuales de agua".format(len(self.df.index)))
-        print("Fecha Minima: {}".format(
-            (self.df.index.min()).strftime("%d/%m/%Y")))
-        print("Fecha Maxima: {}".format(
-            (self.df.index.max()).strftime("%d/%m/%Y")))
+        print(f"Observaciones: {len(self.df.index)} consumos mensuales de agua")
+        print(f"Fecha Minima: {(self.df.index.min()).strftime('%d/%m/%Y')}")
+        print(f"Fecha Maxima: {(self.df.index.max()).strftime('%d/%m/%Y')}")
 
     def get_time_series_wc(self) -> None:
         """
@@ -151,7 +151,10 @@ class WCTrainPredict(object):
         Console.highlight("4. CONVERTIR SERIE DE TIEMPO EN MATRIZ DE APRENDIZAJE SUPERVISADO")
         self.train_predictive_months = int(input("Ingresar la cantidad de variables predictoras: "))
         self.matrix_sl = self.convert_sequence_to_matrix(1)
-        print("Matriz de la serie de tiempo con {} variables predictoras (entrenamiento)".format(self.train_predictive_months))
+        print(
+            f"Matriz de la serie de tiempo con {self.train_predictive_months} "
+            "variables predictoras (entrenamiento)"
+        )
         print("\n")
         print(self.matrix_sl)
         Console.stop_continue("[Enter para continuar]")
@@ -179,7 +182,7 @@ class WCTrainPredict(object):
         """
         for i in range(self.train_predictive_months, 0, -1):
             self.matrix_cols.append(self.df_normalize.shift(i))
-            self.matrix_cols_names += [('v_pred(t-%d)' % (i))]
+            self.matrix_cols_names += [f"v_pred(t-{i})"]
 
     def set_target_column_matrix(self) -> None:
         """
@@ -191,7 +194,7 @@ class WCTrainPredict(object):
             if i == 0:
                 self.matrix_cols_names += [('y(t)')]
             else:
-                self.matrix_cols_names += [('v_y_%d(t+%d)' % (j+1, i)) for j in range(n_vars)]
+                self.matrix_cols_names += [f"v_y_{j + 1}(t+{i})" for j in range(n_vars)]
 
     def data_partition(self) -> None:
         Console.highlight("5. PARTICION DEL CONJUNTO DE DATOS")
@@ -228,10 +231,8 @@ class WCTrainPredict(object):
 
     def print_data_partition(self) -> None:
         print("\n")
-        print("ENTRENAMIENTO ({} %) : {} observaciones (meses)".format(
-            (self.train_percentage), self.n_train))
-        print("PRUEBAS ({} %) : {} observaciones (meses)".format(
-            (self.test_percentage), self.n_test))
+        print(f"ENTRENAMIENTO ({self.train_percentage} %) : {self.n_train} observaciones (meses)")
+        print(f"PRUEBAS ({self.test_percentage} %) : {self.n_test} observaciones (meses)")
 
     def create_model_neural_network(self) -> None:
         """
@@ -298,7 +299,7 @@ class WCTrainPredict(object):
         self.set_df_predict()
         self.build_matrix_predict()
         self.predict_model()
-        print("El pronostico de su proximo consummo de agua es : {} m3".format(self.predicted_value))
+        print(f"El pronostico de su proximo consummo de agua es : {self.predicted_value} m3")
     
     def set_df_predict(self) -> None:
         """
@@ -306,7 +307,7 @@ class WCTrainPredict(object):
         """
         number_last_months = self.train_predictive_months + 1
         last_months = self.df.tail(number_last_months)
-        print("\nTomando los ultimos {} meses de consumo de agua".format(number_last_months))
+        print(f"\nTomando los ultimos {number_last_months} meses de consumo de agua")
         print(last_months)
         print("\n")
         values = (last_months.values).astype('float32')
