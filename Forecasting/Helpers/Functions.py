@@ -24,6 +24,11 @@ from core.constants import (
 timezone = pytz.timezone(TIMEZONE_NAME)
 
 
+def clear_screen() -> None:
+    """Clear the terminal screen on Windows (``cls``) or Unix (``clear``)."""
+    os.system("cls" if os.name == "nt" else "clear")
+
+
 class Console:
     """Static helpers for interactive console output."""
 
@@ -49,7 +54,7 @@ class Console:
         Args:
             message: Header text to display.
         """
-        os.system("clear")
+        clear_screen()
         print(f"\n{COLOR_YELLOW}{message}{END_COLOR}")
         print(f"\n{COLOR_YELLOW}{'*' * HIGHLIGHT_SEPARATOR_LEN}{END_COLOR}\n")
 
