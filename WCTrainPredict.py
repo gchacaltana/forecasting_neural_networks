@@ -113,7 +113,7 @@ class WCTrainPredict:
         self.set_dataframe_wc()
         self.show_dataframe_wc()
         Console.stop_continue(f"[View consumption for {self.apartment}]")
-        print(self.df)
+        Console.display(self.df)
         Console.stop_continue("[Press Enter to continue]")
 
     def get_dataset_water_consumption(self) -> None:
@@ -143,17 +143,23 @@ class WCTrainPredict:
         """
         Print dataset summary information.
         """
-        print(f"Observations: {len(self.df.index)} monthly water consumption records")
-        print(f"Minimum date: {(self.df.index.min()).strftime('%d/%m/%Y')}")
-        print(f"Maximum date: {(self.df.index.max()).strftime('%d/%m/%Y')}")
+        Console.info(
+            f"Observations: {len(self.df.index)} monthly water consumption records"
+        )
+        Console.info(
+            f"Minimum date: {(self.df.index.min()).strftime('%d/%m/%Y')}"
+        )
+        Console.info(
+            f"Maximum date: {(self.df.index.max()).strftime('%d/%m/%Y')}"
+        )
 
     def get_time_series_wc(self) -> None:
         """
         Build and display the time series used for training.
         """
         self.df = self.df.drop(['Anio', 'Mes', 'Facturado'], axis=1)
-        print("TIME SERIES")
-        print(self.df)
+        Console.info("TIME SERIES")
+        Console.display(self.df)
         Console.stop_continue("[Press Enter to continue]")
 
     def normalize_wc(self) -> None:
@@ -163,8 +169,11 @@ class WCTrainPredict:
         Console.highlight("3. DATA NORMALIZATION")
         scaler = MinMaxScaler(feature_range=FEATURE_RANGE)
         self.wc_normalize = scaler.fit_transform(self.df.values.reshape(-1, 1))
-        print(f"Time series data normalized to [{FEATURE_RANGE[0]}, {FEATURE_RANGE[1]}].")
-        print(self.wc_normalize)
+        Console.info(
+            f"Time series data normalized to "
+            f"[{FEATURE_RANGE[0]}, {FEATURE_RANGE[1]}]."
+        )
+        Console.display(self.wc_normalize)
         Console.stop_continue("[Press Enter to continue]")
 
     def convert_time_series_to_supervised_learning_matrix(self) -> None:
@@ -175,12 +184,12 @@ class WCTrainPredict:
         Console.highlight("4. CONVERT TIME SERIES TO SUPERVISED LEARNING MATRIX")
         self.train_predictive_months = int(input("Enter the number of predictor variables: "))
         self.matrix_sl = self.convert_sequence_to_matrix(1)
-        print(
+        Console.info(
             f"Time series matrix with {self.train_predictive_months} "
             "predictor variables (training)"
         )
-        print("\n")
-        print(self.matrix_sl)
+        Console.info()
+        Console.display(self.matrix_sl)
         Console.stop_continue("[Press Enter to continue]")
 
     def convert_sequence_to_matrix(self, number_target_y: int = 1) -> pd.DataFrame:
@@ -257,9 +266,15 @@ class WCTrainPredict:
         self.x_val = self.x_val.reshape((self.x_val.shape[0], 1, self.x_val.shape[1]))
 
     def print_data_partition(self) -> None:
-        print("\n")
-        print(f"TRAINING ({self.train_percentage} %) : {self.n_train} observations (months)")
-        print(f"TEST ({self.test_percentage} %) : {self.n_test} observations (months)")
+        Console.info()
+        Console.info(
+            f"TRAINING ({self.train_percentage} %) : "
+            f"{self.n_train} observations (months)"
+        )
+        Console.info(
+            f"TEST ({self.test_percentage} %) : "
+            f"{self.n_test} observations (months)"
+        )
 
     def create_model_neural_network(self) -> None:
         """
@@ -274,7 +289,7 @@ class WCTrainPredict:
         Console.highlight("6. CREATING THE NEURAL NETWORK")
         self.print_info_neural_network()
         self.neurals_hidden_layer = int(input("Neurons for the input layer: "))
-        print("\n")
+        Console.info()
         self.model_nn = Sequential()
         self.model_nn.add(
             Dense(
@@ -292,13 +307,14 @@ class WCTrainPredict:
         Console.stop_continue("[Press Enter to continue]")
 
     def print_info_neural_network(self) -> None:
-        print("+ 1 hidden layer with n neurons")
-        print("+ Output: 1 neuron")
-        print("+ Activation function: Hyperbolic Tangent")
-        print("+ Optimizer: Adam")
-        print("+ Loss function: Mean Absolute Error (MAE)")
-        print("+ Accuracy metric: Mean Squared Error (MSE)")
-        print("\n\n")
+        Console.info("+ 1 hidden layer with n neurons")
+        Console.info("+ Output: 1 neuron")
+        Console.info("+ Activation function: Hyperbolic Tangent")
+        Console.info("+ Optimizer: Adam")
+        Console.info("+ Loss function: Mean Absolute Error (MAE)")
+        Console.info("+ Accuracy metric: Mean Squared Error (MSE)")
+        Console.info()
+        Console.info()
 
     def execution_model_neural_network(self) -> None:
         Console.highlight("7. NEURAL NETWORK TRAINING")
@@ -310,7 +326,7 @@ class WCTrainPredict:
             validation_data=(self.x_val, self.x_val),
             batch_size=self.train_predictive_months,
         )
-        print("\nTraining finished")
+        Console.info("\nTraining finished")
         Console.stop_continue("[Press Enter to view results]")
 
     def results_model_neural_network(self) -> None:
@@ -325,8 +341,8 @@ class WCTrainPredict:
         Ask whether to continue training or proceed with prediction.
         """
         Console.highlight("TRAIN AGAIN?")
-        print("1. Yes, train again.")
-        print("2. No, continue with prediction.")
+        Console.info("1. Yes, train again.")
+        Console.info("2. No, continue with prediction.")
         response = int(input("=> "))
         self.iterate_train() if response == 1 else self.predict_next_wc()
             
@@ -338,7 +354,9 @@ class WCTrainPredict:
         self.set_df_predict()
         self.build_matrix_predict()
         self.predict_model()
-        print(f"Your next water consumption forecast is: {self.predicted_value} m3")
+        Console.info(
+            f"Your next water consumption forecast is: {self.predicted_value} m3"
+        )
     
     def set_df_predict(self) -> None:
         """
@@ -346,9 +364,11 @@ class WCTrainPredict:
         """
         number_last_months = self.train_predictive_months + 1
         last_months = self.df.tail(number_last_months)
-        print(f"\nUsing the last {number_last_months} months of water consumption")
-        print(last_months)
-        print("\n")
+        Console.info(
+            f"\nUsing the last {number_last_months} months of water consumption"
+        )
+        Console.display(last_months)
+        Console.info()
         values = (last_months.values).astype('float32')
         values = values.reshape(-1, 1)
         self.scaler = MinMaxScaler(feature_range=FEATURE_RANGE)

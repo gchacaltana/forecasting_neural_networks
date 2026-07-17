@@ -6,11 +6,16 @@ Parses command-line arguments and dispatches to the training/prediction
 workflow (e.g. ``python Application.py train``).
 """
 
+import logging
 import sys
 
 from core import AppError, MissingArgumentError
+from core.logging_config import configure_logging
 from Forecasting.Settings.ApplicationConfig import ApplicationConfig
 from WCTrainPredict import WCTrainPredict
+
+configure_logging()
+logger = logging.getLogger(__name__)
 
 
 class Application:
@@ -44,4 +49,4 @@ if __name__ == "__main__":
     try:
         wmapp = Application(sys.argv)
     except AppError as err:
-        print("Exception: ", err)
+        logger.error("Application error: %s", err)

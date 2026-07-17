@@ -10,6 +10,7 @@ from __future__ import annotations
 import os
 from datetime import datetime
 from logging import Logger
+from typing import Any
 
 import pytz
 
@@ -30,22 +31,40 @@ def clear_screen() -> None:
 
 
 class Console:
-    """Static helpers for interactive console output."""
+    """Static helpers for interactive console UI output (not diagnostics)."""
 
     @staticmethod
-    def outline(content: str, logging: Logger | None = None) -> None:
-        """Print a timestamped message and optionally forward it to a logger.
+    def info(message: str = "") -> None:
+        """Print an interactive UI message.
+
+        Args:
+            message: Text to display. Empty string prints a blank line.
+        """
+        print(message)
+
+    @staticmethod
+    def display(value: Any) -> None:
+        """Print a value (e.g. DataFrame or array) in the interactive UI.
+
+        Args:
+            value: Object to display.
+        """
+        print(value)
+
+    @staticmethod
+    def outline(content: str, logger: Logger | None = None) -> None:
+        """Print a timestamped UI message and optionally mirror it to a logger.
 
         Args:
             content: Message to display.
-            logging: Optional logger that receives the same message via ``info``.
+            logger: Optional logger that receives the same message via ``info``.
         """
         now_utc = datetime.now()
         now = now_utc.astimezone(timezone)
         outline = f"{now.strftime('%Y-%m-%d %H:%M:%S')} - {content}"
         print(outline)
-        if logging:
-            logging.info(outline)
+        if logger is not None:
+            logger.info(outline)
 
     @staticmethod
     def highlight(message: str) -> None:
