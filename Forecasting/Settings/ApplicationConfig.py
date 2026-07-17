@@ -11,7 +11,7 @@ import socket
 from dotenv import load_dotenv
 
 
-class ApplicationConfig(object):
+class ApplicationConfig:
     def __init__(self) -> None:
         load_dotenv()
         self.load_config()

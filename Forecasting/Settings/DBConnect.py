@@ -17,7 +17,7 @@ if TYPE_CHECKING:
     from mysql.connector.connection import MySQLConnection
 
 
-class DBConnect():
+class DBConnect:
     def __init__(self) -> None:
         self.app_config = ApplicationConfig()
 

@@ -12,7 +12,7 @@ from typing import Any
 from Forecasting.Settings.DBConnect import DBConnect
 
 
-class WaterConsumptionDataModel(object):
+class WaterConsumptionDataModel:
     """
     Data model for monthly water consumption records.
     """

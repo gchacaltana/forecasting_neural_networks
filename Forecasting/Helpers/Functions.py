@@ -21,7 +21,7 @@ END_COLOR = "\033[0m"
 COLOR_GREEN = "\033[92m"
 
 
-class Console():    
+class Console:    
 
     @staticmethod
     def outline(content: str, logging: Logger | None = None) -> None:

@@ -25,7 +25,7 @@ from Forecasting.Models.DataModel.WaterConsumptionDataModel import (
 )
 
 
-class WCTrainPredict(object):
+class WCTrainPredict:
 
     def __init__(self) -> None:
         self.set_config_app()

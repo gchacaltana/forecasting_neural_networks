@@ -13,7 +13,7 @@ from Forecasting.Settings.ApplicationConfig import ApplicationConfig
 from WCTrainPredict import WCTrainPredict
 
 
-class Application(object):
+class Application:
     """Orchestrates CLI dispatch for water-consumption forecasting commands."""
 
     def __init__(self, argv: list[str]) -> None:
