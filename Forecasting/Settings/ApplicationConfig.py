@@ -12,11 +12,15 @@ from dotenv import load_dotenv
 
 
 class ApplicationConfig:
+    """Load and expose environment-specific application settings."""
+
     def __init__(self) -> None:
+        """Load ``.env`` values and initialize host-specific configuration."""
         load_dotenv()
         self.load_config()
 
     def load_config(self) -> None:
+        """Resolve the current host and load production or development settings."""
         self.hostname = socket.getfqdn()
         self.path_app = os.getcwd()
         self.load_config_prod()

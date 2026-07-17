@@ -13,18 +13,28 @@ from logging import Logger
 
 import pytz
 
-timezone = pytz.timezone("America/Lima")
+from core.constants import (
+    COLOR_GREEN,
+    COLOR_YELLOW,
+    END_COLOR,
+    HIGHLIGHT_SEPARATOR_LEN,
+    TIMEZONE_NAME,
+)
 
-# Console Constants
-COLOR_YELLOW = "\033[93m"
-END_COLOR = "\033[0m"
-COLOR_GREEN = "\033[92m"
+timezone = pytz.timezone(TIMEZONE_NAME)
 
 
-class Console:    
+class Console:
+    """Static helpers for interactive console output."""
 
     @staticmethod
     def outline(content: str, logging: Logger | None = None) -> None:
+        """Print a timestamped message and optionally forward it to a logger.
+
+        Args:
+            content: Message to display.
+            logging: Optional logger that receives the same message via ``info``.
+        """
         now_utc = datetime.now()
         now = now_utc.astimezone(timezone)
         outline = f"{now.strftime('%Y-%m-%d %H:%M:%S')} - {content}"
@@ -34,10 +44,20 @@ class Console:
 
     @staticmethod
     def highlight(message: str) -> None:
+        """Clear the screen and print a highlighted section header.
+
+        Args:
+            message: Header text to display.
+        """
         os.system("clear")
         print(f"\n{COLOR_YELLOW}{message}{END_COLOR}")
-        print(f"\n{COLOR_YELLOW}{'*' * 50}{END_COLOR}\n")
+        print(f"\n{COLOR_YELLOW}{'*' * HIGHLIGHT_SEPARATOR_LEN}{END_COLOR}\n")
 
     @staticmethod
     def stop_continue(message: str) -> None:
+        """Pause execution until the user presses Enter.
+
+        Args:
+            message: Prompt shown while waiting.
+        """
         input(f"\n{COLOR_GREEN}{message}{END_COLOR}\n")

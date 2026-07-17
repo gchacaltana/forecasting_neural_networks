@@ -18,14 +18,22 @@ if TYPE_CHECKING:
 
 
 class DBConnect:
+    """Create MySQL connections from application configuration."""
+
     def __init__(self) -> None:
+        """Load application configuration used for database credentials."""
         self.app_config = ApplicationConfig()
 
     def connect_db(self) -> MySQLConnection:
+        """Open and return a MySQL connection using configured credentials.
+
+        Returns:
+            An active ``mysql.connector`` connection.
+        """
         self.mydb = mysql.connector.connect(
-            host = self.app_config.db_conection['host'],
-            user = self.app_config.db_conection['usr'],
-            password = self.app_config.db_conection['pwd'],
-            database = self.app_config.db_conection['db']
+            host=self.app_config.db_conection['host'],
+            user=self.app_config.db_conection['usr'],
+            password=self.app_config.db_conection['pwd'],
+            database=self.app_config.db_conection['db'],
         )
         return self.mydb
