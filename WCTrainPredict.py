@@ -1,5 +1,4 @@
-# !/usr/bin/env python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
 """
 Interactive pipeline to train a neural network and forecast monthly
 drinking-water consumption for a household.
