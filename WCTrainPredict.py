@@ -8,6 +8,7 @@ __author__ = "Gonzalo Chacaltana Buleje <gchacaltanab@outlook.com>"
 
 from Forecasting.Models.DataModel.WaterConsumptionDataModel import WaterConsumptionDataModel
 from Forecasting.Helpers.Functions import Console
+from core import DatasetNotFoundError, InvalidPartitionError
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from keras.layers import Dense, Activation, Flatten
@@ -102,7 +103,7 @@ class WCTrainPredict(object):
         wcdm = WaterConsumptionDataModel()
         self.wm_consumptions = wcdm.get_wm_month_consumption_by_property(self.building, self.apartment)
         if len(self.wm_consumptions) == 0:
-            raise Exception(
+            raise DatasetNotFoundError(
                 f"El departamento {self.apartment} del edificio {self.building} "
                 "no tiene registros de consumos mensuales."
             )
@@ -212,7 +213,9 @@ class WCTrainPredict(object):
         self.test_percentage = int(input("Ingresar porcentaje para datos de pruebas: "))
         percentage_sum = self.train_percentage + self.test_percentage
         if percentage_sum!=100:
-            raise Exception("La suma de los porcentajes de entrenamiento y pruebas es invalido")
+            raise InvalidPartitionError(
+                "La suma de los porcentajes de entrenamiento y pruebas es invalido"
+            )
 
     def set_data_partition(self) -> None:
         values = self.matrix_sl.values

@@ -7,6 +7,7 @@ __author__ = "Gonzalo Chacaltana Buleje <gchacaltanab@outlook.com>"
 
 from Forecasting.Settings.ApplicationConfig import ApplicationConfig
 from WCTrainPredict import WCTrainPredict
+from core import AppError, MissingArgumentError
 import sys,os
 
 class Application(object):
@@ -21,7 +22,7 @@ class Application(object):
 
     def dispatcher(self) -> None:
         if len(sys.argv) <= 1:
-            raise Exception("Primer parametro no definido")
+            raise MissingArgumentError("Primer parametro no definido")
         self.wm_train()
 
     def wm_train(self) -> None:
@@ -37,5 +38,5 @@ class Application(object):
 if __name__ == "__main__":
     try:
         wmapp = Application(sys.argv)
-    except (Exception, TypeError, IndexError) as err:
+    except AppError as err:
         print("Exception: ", err)
