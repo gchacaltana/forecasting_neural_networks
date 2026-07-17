@@ -191,7 +191,7 @@ class WCTrainPredict(object):
         """
         Add target variables to the matrix.
         """
-        n_vars = 1 if type(self.wc_normalize) is list else self.wc_normalize.shape[1]
+        n_vars = 1 if isinstance(self.wc_normalize, list) else self.wc_normalize.shape[1]
         for i in range(0, self.number_target_y):
             self.matrix_cols.append(self.df_normalize.shift(-i))
             if i == 0:
