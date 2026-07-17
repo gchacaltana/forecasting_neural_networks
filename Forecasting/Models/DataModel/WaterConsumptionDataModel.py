@@ -1,5 +1,11 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+Data-access layer for monthly water-consumption records.
+
+Queries the database (via stored procedures) for consumption history of a
+given building and apartment, used as input for the forecasting pipeline.
+"""
 from __future__ import annotations
 
 __author__ = "Gonzalo Chacaltana Buleje <gchacaltanab@outlook.com>"
@@ -10,7 +16,7 @@ from Forecasting.Settings.DBConnect import DBConnect
 
 class WaterConsumptionDataModel(object):
     """
-    Clase para obtener información sobre los consumos mensuales de agua.
+    Data model for monthly water consumption records.
     """
     
     def __init__(self) -> None:

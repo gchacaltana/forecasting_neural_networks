@@ -1,14 +1,14 @@
-# Pronóstico con redes neuronales
+# Forecasting with neural networks
 
-## Resumen
+## Overview
 
-Aplicación demo que implementa el proceso de entrenamiento de una red neuronal para un caso de uso de pronóstico de consumo mensual de agua potable de una vivienda.
+Demo application that implements the training process of a neural network for forecasting monthly drinking-water consumption of a household.
 
-## Conjunto de datos
+## Dataset
 
-El conjunto de datos corresponde al consumo de agua potable (en m3) de una vivienda. Las variables son: Fecha Facturación, Año, Mes, Consumo M3 e Importe Total.
+The dataset corresponds to drinking-water consumption (in m3) of a household. The variables are: Billing Date, Year, Month, Consumption M3, and Total Amount.
 
-Ejemplo de estructura de información.
+Sample data structure:
 
     2017-11-11         2017   11  27.957   S/. 42.63
     2017-12-12         2017   12  27.961   S/. 32.09
@@ -48,27 +48,30 @@ Ejemplo de estructura de información.
     2020-10-10         2020   10  25.238   S/. 72.69
     2020-11-11         2020   11  22.726   S/. 65.43
 
-## Configuración Red Neuronal
+## Neural network configuration
 
-    Creamos modelo de red neuronal feed forward.
-    Arquitectura:
-        * 01 capa oculta con "n" neuronas (ingresadas por consola)
-        * 01 neurona de salida.
-    Función de activación: Tangente Hiperbólica.(para valores normalizados -1 a 1)
-    Optimizador: Adam
-    Métrica de Pérdida: (Loss) Error Absoluto Medio
-    Para calcular el acuracy, se utilizará  Error Cuadrático Medio (MSE)
+    Build a feed-forward neural network model.
+    Architecture:
+        * 1 hidden layer with "n" neurons (entered via console)
+        * 1 output neuron
+    Activation function: Hyperbolic Tangent (for normalized values in [-1, 1])
+    Optimizer: Adam
+    Loss metric: Mean Absolute Error (MAE)
+    Accuracy metric: Mean Squared Error (MSE)
 
-## Requisitos
+## Requirements
 
-    * numpy 1.19.3
-    * pandas 1.0.1   
-    * Keras 2.4.3
-    * tensorflow 2.4.0
-    * scikit-learn 0.22.1
-    * matplotlib 3.1.3
+```bash
+numpy 1.19.3
+pandas 1.0.1
+Keras 2.4.3
+tensorflow 2.4.0
+scikit-learn 0.22.1
+matplotlib 3.1.3
+```
 
-## Ejecución
+## How to run
 
-    python Application.py train
-
+```bash
+python Application.py train
+```

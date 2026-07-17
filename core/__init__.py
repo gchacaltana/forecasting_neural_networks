@@ -1,6 +1,11 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Shared application core (exceptions and cross-cutting utilities)."""
+"""
+Shared application core package.
+
+Re-exports cross-cutting building blocks (currently the custom exception
+hierarchy) so other modules can import them from ``core`` directly.
+"""
 from __future__ import annotations
 
 from core.exceptions import (

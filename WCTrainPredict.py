@@ -1,8 +1,11 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Clase para entrenar modelo de redes neuronales y predecir el consumo mensual de agua potable
-de una vivienda.
+Interactive pipeline to train a neural network and forecast monthly
+drinking-water consumption for a household.
+
+Loads historical data, builds a supervised time-series matrix, trains a
+feed-forward Keras model, and predicts the next month's consumption (m3).
 """
 __author__ = "Gonzalo Chacaltana Buleje <gchacaltanab@outlook.com>"
 
@@ -42,7 +45,7 @@ class WCTrainPredict(object):
     def set_config_neural_network(self) -> None:
         self.epochs = 60 # (default)
         self.train_predictive_months = 3 # (default)
-        # matrix_sl: Matriz de aprendizaje supervisado para TS (Time Series)
+        # matrix_sl: supervised-learning matrix for TS (Time Series)
         self.matrix_sl = None
         self.train_percentage = 80  # 80% (default)
         self.test_percentage = 20  # 20% (default)
@@ -50,14 +53,14 @@ class WCTrainPredict(object):
         self.data_test = []
         self.x_train, self.y_train = [], []
         self.x_val, self.y_val = [],[]
-        self.model_nn = None # modelo de red neuronal
+        self.model_nn = None # neural network model
         self.activation = "tanh" # (default)
         self.optimizer = "Adam" # (default)
         self.loss = "mean_absolute_error" # (default)
 
     def run(self) -> None:
         """
-        main method
+        Main method.
         """
         self.input_data()
         self.build_wc_df()
@@ -67,7 +70,7 @@ class WCTrainPredict(object):
     
     def iterate_train(self) -> None:
         """
-        Metodo iterativo hasta que se confirme fin del entrenamiento.
+        Iterative method until training is confirmed as finished.
         """
         self.convert_time_series_to_supervised_learning_matrix()
         self.data_partition()
@@ -78,39 +81,39 @@ class WCTrainPredict(object):
 
     def input_data(self) -> None:
         """
-        Ingresar información (edificio y departamento) para obtener dataset de la base de datos.
+        Collect building and apartment names to load the dataset from the database.
         """
-        Console.highlight("1. SELECCIONAR CONJUNTO DE DATOS")
-        self.building = str(input("Ingrese nombre de edificio: ")).upper()
-        self.apartment = str(input("Ingrese nombre de vivienda: ")).upper()
+        Console.highlight("1. SELECT DATASET")
+        self.building = str(input("Enter building name: ")).upper()
+        self.apartment = str(input("Enter apartment name: ")).upper()
 
     def build_wc_df(self) -> None:
         """
-        Construir dataframe de consumo de agua
+        Build the water-consumption dataframe.
         """
-        Console.highlight(f"2. CONSUMOS MENSUALES DE AGUA DEL DEPARTAMENTO {self.apartment}")
+        Console.highlight(f"2. MONTHLY WATER CONSUMPTION FOR APARTMENT {self.apartment}")
         self.get_dataset_water_consumption()
         self.set_dataframe_wc()
         self.show_dataframe_wc()
-        Console.stop_continue(f"[Ver consumos del {self.apartment}]")
+        Console.stop_continue(f"[View consumption for {self.apartment}]")
         print(self.df)
-        Console.stop_continue("[Enter para continuar]")
+        Console.stop_continue("[Press Enter to continue]")
 
     def get_dataset_water_consumption(self) -> None:
         """
-        Obtener información de consumos de agua de la base de datos.
+        Fetch water-consumption records from the database.
         """
         wcdm = WaterConsumptionDataModel()
         self.wm_consumptions = wcdm.get_wm_month_consumption_by_property(self.building, self.apartment)
         if len(self.wm_consumptions) == 0:
             raise DatasetNotFoundError(
-                f"El departamento {self.apartment} del edificio {self.building} "
-                "no tiene registros de consumos mensuales."
+                f"Apartment {self.apartment} in building {self.building} "
+                "has no monthly consumption records."
             )
     
     def set_dataframe_wc(self) -> None:
         """
-        Crear dataframe wc (Water Consumption)
+        Create the water-consumption (wc) dataframe.
         """
         self.df = pd.DataFrame(self.wm_consumptions, columns = ['Anio','Mes','fecha_facturacion', 'm3','Facturado'])
         self.df['fecha_facturacion'] = pd.to_datetime(self.df['fecha_facturacion'])
@@ -118,53 +121,53 @@ class WCTrainPredict(object):
     
     def show_dataframe_wc(self) -> None:
         """
-        Devolver información del dataset
+        Print dataset summary information.
         """
-        print(f"Observaciones: {len(self.df.index)} consumos mensuales de agua")
-        print(f"Fecha Minima: {(self.df.index.min()).strftime('%d/%m/%Y')}")
-        print(f"Fecha Maxima: {(self.df.index.max()).strftime('%d/%m/%Y')}")
+        print(f"Observations: {len(self.df.index)} monthly water consumption records")
+        print(f"Minimum date: {(self.df.index.min()).strftime('%d/%m/%Y')}")
+        print(f"Maximum date: {(self.df.index.max()).strftime('%d/%m/%Y')}")
 
     def get_time_series_wc(self) -> None:
         """
-        Obtener y mostrar informacion que conformará la serie de tiempo
+        Build and display the time series used for training.
         """
         self.df = self.df.drop(['Anio','Mes','Facturado'], axis=1)
-        print("SERIE DE TIEMPO")
+        print("TIME SERIES")
         print(self.df)
-        Console.stop_continue("[Enter para continuar]")
+        Console.stop_continue("[Press Enter to continue]")
 
     def normalize_wc(self) -> None:
         """
-        Normalizar valores del consumo de m3 a valores entre -1 a 1.
+        Normalize m3 consumption values to the range [-1, 1].
         """
-        Console.highlight("3. NORMALIZACION DE LOS DATOS")
+        Console.highlight("3. DATA NORMALIZATION")
         scaler = MinMaxScaler(feature_range=(-1, 1))
         self.wc_normalize = scaler.fit_transform(self.df.values.reshape(-1, 1))
-        print("Datos de la serie de tiempo normalizados [-1,1].")
+        print("Time series data normalized to [-1, 1].")
         print(self.wc_normalize)
-        Console.stop_continue("[Enter para continuar]")
+        Console.stop_continue("[Press Enter to continue]")
 
     def convert_time_series_to_supervised_learning_matrix(self) -> None:
         """
-        Convertimos serie de tiempo en una matrix de aprendizaje supervisado, con tantas variables predictoras
-        ingresadas por consola.
+        Convert the time series into a supervised-learning matrix with as many
+        predictor variables as entered via the console.
         """
-        Console.highlight("4. CONVERTIR SERIE DE TIEMPO EN MATRIZ DE APRENDIZAJE SUPERVISADO")
-        self.train_predictive_months = int(input("Ingresar la cantidad de variables predictoras: "))
+        Console.highlight("4. CONVERT TIME SERIES TO SUPERVISED LEARNING MATRIX")
+        self.train_predictive_months = int(input("Enter the number of predictor variables: "))
         self.matrix_sl = self.convert_sequence_to_matrix(1)
         print(
-            f"Matriz de la serie de tiempo con {self.train_predictive_months} "
-            "variables predictoras (entrenamiento)"
+            f"Time series matrix with {self.train_predictive_months} "
+            "predictor variables (training)"
         )
         print("\n")
         print(self.matrix_sl)
-        Console.stop_continue("[Enter para continuar]")
+        Console.stop_continue("[Press Enter to continue]")
 
     def convert_sequence_to_matrix(self, number_target_y: int = 1) -> pd.DataFrame:
         """
-        Parametros
+        Parameters
         ----------
-        number_targets_y: Numero de variables target (y estimado)
+        number_target_y: Number of target variables (estimated y)
         """
         self.number_target_y = number_target_y
         self.df_normalize = pd.DataFrame(self.wc_normalize)
@@ -173,13 +176,13 @@ class WCTrainPredict(object):
         self.set_target_column_matrix()
         matrix = pd.concat(self.matrix_cols, axis=1)
         matrix.columns = self.matrix_cols_names
-        # Elimina valores perdidos
+        # Drop missing values
         matrix.dropna(inplace=True)
         return matrix
 
     def set_predictors_columns_matrix(self) -> None:
         """
-        Agregando las variables predictoras a la matriz.
+        Add predictor variables to the matrix.
         """
         for i in range(self.train_predictive_months, 0, -1):
             self.matrix_cols.append(self.df_normalize.shift(i))
@@ -187,7 +190,7 @@ class WCTrainPredict(object):
 
     def set_target_column_matrix(self) -> None:
         """
-        Agregando las variables objetivos a la matriz.
+        Add target variables to the matrix.
         """
         n_vars = 1 if type(self.wc_normalize) is list else self.wc_normalize.shape[1]
         for i in range(0, self.number_target_y):
@@ -198,23 +201,23 @@ class WCTrainPredict(object):
                 self.matrix_cols_names += [f"v_y_{j + 1}(t+{i})" for j in range(n_vars)]
 
     def data_partition(self) -> None:
-        Console.highlight("5. PARTICION DEL CONJUNTO DE DATOS")
+        Console.highlight("5. DATASET PARTITION")
         self.input_data_partition()
         self.set_data_partition()
         self.build_xy_train_test()
         self.print_data_partition()
-        Console.stop_continue("[Enter para continuar]")
+        Console.stop_continue("[Press Enter to continue]")
 
     def input_data_partition(self) -> None:
         """
-        Ingreso de los porcentajes de entrenamiento y pruebas (por consola) para realizar la partición.
+        Read train and test percentages from the console for the data split.
         """
-        self.train_percentage = int(input("Ingresar porcentaje para datos de entrenamiento: "))
-        self.test_percentage = int(input("Ingresar porcentaje para datos de pruebas: "))
+        self.train_percentage = int(input("Enter percentage for training data: "))
+        self.test_percentage = int(input("Enter percentage for test data: "))
         percentage_sum = self.train_percentage + self.test_percentage
         if percentage_sum!=100:
             raise InvalidPartitionError(
-                "La suma de los porcentajes de entrenamiento y pruebas es invalido"
+                "The sum of the training and test percentages is invalid"
             )
 
     def set_data_partition(self) -> None:
@@ -234,22 +237,22 @@ class WCTrainPredict(object):
 
     def print_data_partition(self) -> None:
         print("\n")
-        print(f"ENTRENAMIENTO ({self.train_percentage} %) : {self.n_train} observaciones (meses)")
-        print(f"PRUEBAS ({self.test_percentage} %) : {self.n_test} observaciones (meses)")
+        print(f"TRAINING ({self.train_percentage} %) : {self.n_train} observations (months)")
+        print(f"TEST ({self.test_percentage} %) : {self.n_test} observations (months)")
 
     def create_model_neural_network(self) -> None:
         """
-        Creamos modelo de red neuronal feed forward.
-        Arquitectura.
-        01 capa oculta con "n" neuronas.
-        Función de activación: Tangente Hiperbólica.(Valores -1 a 1)
-        Optimizador: Adam
-        Métrica de Pérdida: (Loss) Error Absoluto Medio
-        Para calcular el acuracy, se utilizará  Error Cuadrático Medio (MSE)
+        Create a feed-forward neural network model.
+        Architecture:
+        1 hidden layer with "n" neurons.
+        Activation function: Hyperbolic Tangent (values in [-1, 1]).
+        Optimizer: Adam
+        Loss metric: Mean Absolute Error (MAE)
+        Accuracy metric: Mean Squared Error (MSE)
         """
-        Console.highlight("6. CREANDO LA RED NEURONAL")
+        Console.highlight("6. CREATING THE NEURAL NETWORK")
         self.print_info_neural_network()
-        self.neurals_hidden_layer = int(input("Neuronas para la capa de entrada: "))
+        self.neurals_hidden_layer = int(input("Neurons for the input layer: "))
         print("\n")
         self.model_nn = Sequential()
         self.model_nn.add(Dense(self.neurals_hidden_layer, input_shape = (1,self.train_predictive_months), activation = self.activation))
@@ -257,77 +260,76 @@ class WCTrainPredict(object):
         self.model_nn.add(Dense(1, activation = self.activation))
         self.model_nn.compile(loss=self.loss, optimizer=self.optimizer, metrics=["mse"])
         self.model_nn.summary()
-        Console.stop_continue("[Enter para continuar]")
+        Console.stop_continue("[Press Enter to continue]")
 
     def print_info_neural_network(self) -> None:
-        print("+ 01 capa oculta de n neuronas")
-        print("+ Salida: 01 neurona")
-        print("+ Funcion de activacion: Tangente Hiperbolica")
-        print("+ Optimizador: Adam")
-        print("+ Funcion de perdida: Error Absoluto Medio (MAE)")
-        print("+ Calculo del Acuracy: Error Cuadratico Medio (MSE)")
+        print("+ 1 hidden layer with n neurons")
+        print("+ Output: 1 neuron")
+        print("+ Activation function: Hyperbolic Tangent")
+        print("+ Optimizer: Adam")
+        print("+ Loss function: Mean Absolute Error (MAE)")
+        print("+ Accuracy metric: Mean Squared Error (MSE)")
         print("\n\n")
 
     def execution_model_neural_network(self) -> None:
-        Console.highlight("7. ENTRENAMIENTO DE LA RED NEURONAL")
-        self.epochs = int(input("Numero de epochs: "))
+        Console.highlight("7. NEURAL NETWORK TRAINING")
+        self.epochs = int(input("Number of epochs: "))
         self.model_nn.fit(self.x_train, self.y_train, epochs=self.epochs, validation_data=(
             self.x_val, self.x_val), batch_size=self.train_predictive_months)
-        print("\nFin de entrenamiento")
-        Console.stop_continue("[Enter para ver resultado]")
+        print("\nTraining finished")
+        Console.stop_continue("[Press Enter to view results]")
 
     def results_model_neural_network(self) -> None:
         results = self.model_nn.predict(self.x_val)
         plt.scatter(range(len(self.y_val)), self.y_val, c='g')
         plt.scatter(range(len(results)), results, c='r')
-        plt.title('Resultados de Entrenamiento')
+        plt.title('Training Results')
         plt.show()
     
     def question_continue_prediction(self) -> None:
         """
-        Muestra texto con pregunta a fin de confirmar si se continua
-        con el entrenamiento o si se va realizar la predicción
+        Ask whether to continue training or proceed with prediction.
         """
-        Console.highlight("VOLVER A ENTRENAR?")
-        print("1. Si, volver a entrenar.")
-        print("2. No, continuar con la prediccion.")
+        Console.highlight("TRAIN AGAIN?")
+        print("1. Yes, train again.")
+        print("2. No, continue with prediction.")
         response = int(input("=> "))
         self.iterate_train() if response == 1 else self.predict_next_wc()
             
     def predict_next_wc(self) -> None:
         """
-        Realiza la predicción del próximo consumo de agua (wc = water consumption)
+        Forecast the next water consumption (wc = water consumption).
         """
-        Console.highlight("8. PREDECIR PROXIMO CONSUMO MENSUAL DE AGUA")
+        Console.highlight("8. FORECAST NEXT MONTHLY WATER CONSUMPTION")
         self.set_df_predict()
         self.build_matrix_predict()
         self.predict_model()
-        print(f"El pronostico de su proximo consummo de agua es : {self.predicted_value} m3")
+        print(f"Your next water consumption forecast is: {self.predicted_value} m3")
     
     def set_df_predict(self) -> None:
         """
-        Prepara la data para la predicción
+        Prepare the data used for prediction.
         """
         number_last_months = self.train_predictive_months + 1
         last_months = self.df.tail(number_last_months)
-        print(f"\nTomando los ultimos {number_last_months} meses de consumo de agua")
+        print(f"\nUsing the last {number_last_months} months of water consumption")
         print(last_months)
         print("\n")
         values = (last_months.values).astype('float32')
         values = values.reshape(-1,1)
         self.scaler = MinMaxScaler(feature_range = (-1, 1))
-        self.wc_normalize = self.scaler.fit_transform(values) # Normalizar conjunto de datos.
+        self.wc_normalize = self.scaler.fit_transform(values) # Normalize the dataset.
     
     def build_matrix_predict(self) -> None:
         """
-        Construye la matriz para la predicción
+        Build the matrix used for prediction.
         """
         self.matrix_sl = self.convert_sequence_to_matrix(1)
         self.matrix_sl.drop(self.matrix_sl.columns[[self.train_predictive_months]], axis = 1, inplace = True)
     
     def predict_model(self) -> None:
         """
-        Ejecuta la predicción utilizando el modelo de red neuronal (previamente entrenado)
+        Run prediction using the previously trained neural network model.
         """
         values = self.matrix_sl.values
         x_test = values[0:, :]

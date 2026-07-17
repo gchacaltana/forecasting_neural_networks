@@ -1,8 +1,13 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+MySQL connection factory for the forecasting application.
+
+Reads database credentials from ``ApplicationConfig`` and returns an open
+``mysql.connector`` connection used by data-model classes.
+"""
 from __future__ import annotations
 
-__author__ = "Gonzalo Chacaltana Buleje <gchacaltanab@outlook.com>"
 from typing import TYPE_CHECKING
 
 from Forecasting.Settings.ApplicationConfig import ApplicationConfig

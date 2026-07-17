@@ -1,5 +1,11 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+Console helpers for the interactive forecasting CLI.
+
+Provides timestamped output, highlighted section headers, and pause prompts
+used throughout the training and prediction workflow.
+"""
 from __future__ import annotations
 
 __author__ = "Gonzalo Chacaltana Buleje <gchacaltanab@outlook.com>"
