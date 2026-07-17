@@ -21,12 +21,12 @@ import sys
 
 class WCTrainPredict(object):
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.set_config_app()
         self.set_config_neural_network()
         self.set_config_plt()
 
-    def set_config_app(self):
+    def set_config_app(self) -> None:
         self.df = None
         self.wc_normalize = None
         self.df_normalize = None
@@ -34,11 +34,11 @@ class WCTrainPredict(object):
         self.apartment = None
         self.predicted_value = None
 
-    def set_config_plt(self):
+    def set_config_plt(self) -> None:
         plt.rcParams['figure.figsize'] = (16, 9)
         plt.style.use('fast')
 
-    def set_config_neural_network(self):
+    def set_config_neural_network(self) -> None:
         self.epochs = 60 # (default)
         self.train_predictive_months = 3 # (default)
         # matrix_sl: Matriz de aprendizaje supervisado para TS (Time Series)
@@ -54,7 +54,7 @@ class WCTrainPredict(object):
         self.optimizer = "Adam" # (default)
         self.loss = "mean_absolute_error" # (default)
 
-    def run(self):
+    def run(self) -> None:
         """
         main method
         """
@@ -64,7 +64,7 @@ class WCTrainPredict(object):
         self.normalize_wc()
         self.iterate_train()
     
-    def iterate_train(self):
+    def iterate_train(self) -> None:
         """
         Metodo iterativo hasta que se confirme fin del entrenamiento.
         """
@@ -75,7 +75,7 @@ class WCTrainPredict(object):
         self.results_model_neural_network()
         self.question_continue_prediction()
 
-    def input_data(self):
+    def input_data(self) -> None:
         """
         Ingresar información (edificio y departamento) para obtener dataset de la base de datos.
         """
@@ -83,7 +83,7 @@ class WCTrainPredict(object):
         self.building = str(input("Ingrese nombre de edificio: ")).upper()
         self.apartment = str(input("Ingrese nombre de vivienda: ")).upper()
 
-    def build_wc_df(self):
+    def build_wc_df(self) -> None:
         """
         Construir dataframe de consumo de agua
         """
@@ -95,7 +95,7 @@ class WCTrainPredict(object):
         print(self.df)
         Console.stop_continue("[Enter para continuar]")
 
-    def get_dataset_water_consumption(self):
+    def get_dataset_water_consumption(self) -> None:
         """
         Obtener información de consumos de agua de la base de datos.
         """
@@ -105,7 +105,7 @@ class WCTrainPredict(object):
             raise Exception("El departamento {} del edificio {} no tiene registros de consumos mensuales.".format(
                 self.apartment, self.building))
     
-    def set_dataframe_wc(self):
+    def set_dataframe_wc(self) -> None:
         """
         Crear dataframe wc (Water Consumption)
         """
@@ -113,7 +113,7 @@ class WCTrainPredict(object):
         self.df['fecha_facturacion'] = pd.to_datetime(self.df['fecha_facturacion'])
         self.df = self.df.set_index('fecha_facturacion')
     
-    def show_dataframe_wc(self):
+    def show_dataframe_wc(self) -> None:
         """
         Devolver información del dataset
         """
@@ -123,7 +123,7 @@ class WCTrainPredict(object):
         print("Fecha Maxima: {}".format(
             (self.df.index.max()).strftime("%d/%m/%Y")))
 
-    def get_time_series_wc(self):
+    def get_time_series_wc(self) -> None:
         """
         Obtener y mostrar informacion que conformará la serie de tiempo
         """
@@ -132,7 +132,7 @@ class WCTrainPredict(object):
         print(self.df)
         Console.stop_continue("[Enter para continuar]")
 
-    def normalize_wc(self):
+    def normalize_wc(self) -> None:
         """
         Normalizar valores del consumo de m3 a valores entre -1 a 1.
         """
@@ -143,7 +143,7 @@ class WCTrainPredict(object):
         print(self.wc_normalize)
         Console.stop_continue("[Enter para continuar]")
 
-    def convert_time_series_to_supervised_learning_matrix(self):
+    def convert_time_series_to_supervised_learning_matrix(self) -> None:
         """
         Convertimos serie de tiempo en una matrix de aprendizaje supervisado, con tantas variables predictoras
         ingresadas por consola.
@@ -156,7 +156,7 @@ class WCTrainPredict(object):
         print(self.matrix_sl)
         Console.stop_continue("[Enter para continuar]")
 
-    def convert_sequence_to_matrix(self, number_target_y = 1):
+    def convert_sequence_to_matrix(self, number_target_y: int = 1) -> pd.DataFrame:
         """
         Parametros
         ----------
@@ -173,7 +173,7 @@ class WCTrainPredict(object):
         matrix.dropna(inplace=True)
         return matrix
 
-    def set_predictors_columns_matrix(self):
+    def set_predictors_columns_matrix(self) -> None:
         """
         Agregando las variables predictoras a la matriz.
         """
@@ -181,7 +181,7 @@ class WCTrainPredict(object):
             self.matrix_cols.append(self.df_normalize.shift(i))
             self.matrix_cols_names += [('v_pred(t-%d)' % (i))]
 
-    def set_target_column_matrix(self):
+    def set_target_column_matrix(self) -> None:
         """
         Agregando las variables objetivos a la matriz.
         """
@@ -193,7 +193,7 @@ class WCTrainPredict(object):
             else:
                 self.matrix_cols_names += [('v_y_%d(t+%d)' % (j+1, i)) for j in range(n_vars)]
 
-    def data_partition(self):
+    def data_partition(self) -> None:
         Console.highlight("5. PARTICION DEL CONJUNTO DE DATOS")
         self.input_data_partition()
         self.set_data_partition()
@@ -201,7 +201,7 @@ class WCTrainPredict(object):
         self.print_data_partition()
         Console.stop_continue("[Enter para continuar]")
 
-    def input_data_partition(self):
+    def input_data_partition(self) -> None:
         """
         Ingreso de los porcentajes de entrenamiento y pruebas (por consola) para realizar la partición.
         """
@@ -211,7 +211,7 @@ class WCTrainPredict(object):
         if percentage_sum!=100:
             raise Exception("La suma de los porcentajes de entrenamiento y pruebas es invalido")
 
-    def set_data_partition(self):
+    def set_data_partition(self) -> None:
         values = self.matrix_sl.values
         total_rows = len(values)
         self.n_train = int(round(total_rows*(self.train_percentage/100), 0))
@@ -219,21 +219,21 @@ class WCTrainPredict(object):
         self.data_train = values[:self.n_train, :]
         self.data_test = values[self.n_train:, :]
 
-    def build_xy_train_test(self):
+    def build_xy_train_test(self) -> None:
         self.x_train, self.y_train = self.data_train[:,:-1], self.data_train[:, -1]
         self.x_val, self.y_val = self.data_test[:, :-1], self.data_test[:, -1]
         self.x_train = self.x_train.reshape(
             (self.x_train.shape[0], 1, self.x_train.shape[1]))
         self.x_val = self.x_val.reshape((self.x_val.shape[0], 1, self.x_val.shape[1]))
 
-    def print_data_partition(self):
+    def print_data_partition(self) -> None:
         print("\n")
         print("ENTRENAMIENTO ({} %) : {} observaciones (meses)".format(
             (self.train_percentage), self.n_train))
         print("PRUEBAS ({} %) : {} observaciones (meses)".format(
             (self.test_percentage), self.n_test))
 
-    def create_model_neural_network(self):
+    def create_model_neural_network(self) -> None:
         """
         Creamos modelo de red neuronal feed forward.
         Arquitectura.
@@ -255,7 +255,7 @@ class WCTrainPredict(object):
         self.model_nn.summary()
         Console.stop_continue("[Enter para continuar]")
 
-    def print_info_neural_network(self):
+    def print_info_neural_network(self) -> None:
         print("+ 01 capa oculta de n neuronas")
         print("+ Salida: 01 neurona")
         print("+ Funcion de activacion: Tangente Hiperbolica")
@@ -264,7 +264,7 @@ class WCTrainPredict(object):
         print("+ Calculo del Acuracy: Error Cuadratico Medio (MSE)")
         print("\n\n")
 
-    def execution_model_neural_network(self):
+    def execution_model_neural_network(self) -> None:
         Console.highlight("7. ENTRENAMIENTO DE LA RED NEURONAL")
         self.epochs = int(input("Numero de epochs: "))
         self.model_nn.fit(self.x_train, self.y_train, epochs=self.epochs, validation_data=(
@@ -272,14 +272,14 @@ class WCTrainPredict(object):
         print("\nFin de entrenamiento")
         Console.stop_continue("[Enter para ver resultado]")
 
-    def results_model_neural_network(self):
+    def results_model_neural_network(self) -> None:
         results = self.model_nn.predict(self.x_val)
         plt.scatter(range(len(self.y_val)), self.y_val, c='g')
         plt.scatter(range(len(results)), results, c='r')
         plt.title('Resultados de Entrenamiento')
         plt.show()
     
-    def question_continue_prediction(self):
+    def question_continue_prediction(self) -> None:
         """
         Muestra texto con pregunta a fin de confirmar si se continua
         con el entrenamiento o si se va realizar la predicción
@@ -290,7 +290,7 @@ class WCTrainPredict(object):
         response = int(input("=> "))
         self.iterate_train() if response == 1 else self.predict_next_wc()
             
-    def predict_next_wc(self):
+    def predict_next_wc(self) -> None:
         """
         Realiza la predicción del próximo consumo de agua (wc = water consumption)
         """
@@ -300,7 +300,7 @@ class WCTrainPredict(object):
         self.predict_model()
         print("El pronostico de su proximo consummo de agua es : {} m3".format(self.predicted_value))
     
-    def set_df_predict(self):
+    def set_df_predict(self) -> None:
         """
         Prepara la data para la predicción
         """
@@ -314,14 +314,14 @@ class WCTrainPredict(object):
         self.scaler = MinMaxScaler(feature_range = (-1, 1))
         self.wc_normalize = self.scaler.fit_transform(values) # Normalizar conjunto de datos.
     
-    def build_matrix_predict(self):
+    def build_matrix_predict(self) -> None:
         """
         Construye la matriz para la predicción
         """
         self.matrix_sl = self.convert_sequence_to_matrix(1)
         self.matrix_sl.drop(self.matrix_sl.columns[[self.train_predictive_months]], axis = 1, inplace = True)
     
-    def predict_model(self):
+    def predict_model(self) -> None:
         """
         Ejecuta la predicción utilizando el modelo de red neuronal (previamente entrenado)
         """
@@ -331,4 +331,3 @@ class WCTrainPredict(object):
         results = self.model_nn.predict(x_test)
         predicted = [x for x in results]
         self.predicted_value = round(self.scaler.inverse_transform(predicted)[0][0],3)
-    

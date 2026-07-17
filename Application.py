@@ -14,17 +14,17 @@ class Application(object):
     Main Application Water Consumption Predict
     """
 
-    def __init__(self, argv):
+    def __init__(self, argv: list[str]) -> None:
         self.argv = argv
         self.app = ApplicationConfig()
         self.dispatcher()
 
-    def dispatcher(self):
+    def dispatcher(self) -> None:
         if len(sys.argv) <= 1:
             raise Exception("Primer parametro no definido")
         self.wm_train()
 
-    def wm_train(self):
+    def wm_train(self) -> None:
         """
         Entrenar red neuronal para pronóstico
         """

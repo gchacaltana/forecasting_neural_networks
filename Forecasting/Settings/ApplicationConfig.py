@@ -5,21 +5,21 @@ import socket, os
 from dotenv import load_dotenv
 
 class ApplicationConfig(object):
-    def __init__(self):
+    def __init__(self) -> None:
         load_dotenv()
         self.load_config()
 
-    def load_config(self):
+    def load_config(self) -> None:
         self.hostname = socket.getfqdn()
         self.path_app = os.getcwd()
         self.load_config_prod()
         self.load_config_dev()
 
-    def load_config_prod(self):
+    def load_config_prod(self) -> None:
         if (self.hostname == os.environ.get("hs_pro")):
             pass
 
-    def load_config_dev(self):
+    def load_config_dev(self) -> None:
         if (self.hostname == os.environ.get("hs_dev")):
             self.api_token = os.environ.get("api-token")
             self.db_conection = {
