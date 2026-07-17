@@ -6,7 +6,6 @@ CLI entry point for the water-consumption forecasting application.
 Parses command-line arguments and dispatches to the training/prediction
 workflow (e.g. ``python Application.py train``).
 """
-__author__ = "Gonzalo Chacaltana Buleje <gchacaltanab@outlook.com>"
 
 from Forecasting.Settings.ApplicationConfig import ApplicationConfig
 from WCTrainPredict import WCTrainPredict

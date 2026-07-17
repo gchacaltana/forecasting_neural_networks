@@ -8,8 +8,6 @@ given building and apartment, used as input for the forecasting pipeline.
 """
 from __future__ import annotations
 
-__author__ = "Gonzalo Chacaltana Buleje <gchacaltanab@outlook.com>"
-
 from typing import Any
 
 from Forecasting.Settings.DBConnect import DBConnect

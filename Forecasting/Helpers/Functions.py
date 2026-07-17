@@ -8,7 +8,6 @@ used throughout the training and prediction workflow.
 """
 from __future__ import annotations
 
-__author__ = "Gonzalo Chacaltana Buleje <gchacaltanab@outlook.com>"
 from datetime import datetime
 from logging import Logger
 import pytz

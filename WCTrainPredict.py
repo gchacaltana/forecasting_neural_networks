@@ -7,7 +7,6 @@ drinking-water consumption for a household.
 Loads historical data, builds a supervised time-series matrix, trains a
 feed-forward Keras model, and predicts the next month's consumption (m3).
 """
-__author__ = "Gonzalo Chacaltana Buleje <gchacaltanab@outlook.com>"
 
 from Forecasting.Models.DataModel.WaterConsumptionDataModel import WaterConsumptionDataModel
 from Forecasting.Helpers.Functions import Console

@@ -6,7 +6,6 @@ Environment-based application configuration.
 Loads settings from ``.env`` (via python-dotenv) and exposes host-specific
 values such as database connection parameters for development and production.
 """
-__author__ = "Gonzalo Chacaltana Buleje <gchacaltanab@outlook.com>"
 import socket, os
 from dotenv import load_dotenv
 

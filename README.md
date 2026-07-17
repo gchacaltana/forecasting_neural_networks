@@ -61,6 +61,20 @@ Sample data structure:
 
 ## Requirements
 
+Dependencies are declared in `pyproject.toml`. Install them with:
+
+```bash
+pip install -e .
+```
+
+For development tools (ruff, mypy):
+
+```bash
+pip install -e ".[dev]"
+```
+
+Pinned runtime versions:
+
 ```bash
 numpy 1.19.3
 pandas 1.0.1
@@ -68,6 +82,9 @@ Keras 2.4.3
 tensorflow 2.4.0
 scikit-learn 0.22.1
 matplotlib 3.1.3
+python-dotenv
+mysql-connector-python
+pytz
 ```
 
 ## How to run
