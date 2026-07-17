@@ -373,8 +373,7 @@ class WCTrainPredict:
         x_test = values[0:, :]
         x_test = x_test.reshape((x_test.shape[0], 1, x_test.shape[1]))
         results = self.model_nn.predict(x_test)
-        predicted = [x for x in results]
         self.predicted_value = round(
-            self.scaler.inverse_transform(predicted)[0][0],
+            self.scaler.inverse_transform(results)[0][0],
             PREDICTION_DECIMAL_PLACES,
         )

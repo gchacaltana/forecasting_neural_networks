@@ -16,28 +16,28 @@ class WaterConsumptionDataModel:
     """Data model for monthly water consumption records."""
 
     def __init__(self) -> None:
-        """Open a database connection and prepare a dictionary cursor."""
-        db_connect = DBConnect()
-        self.dbwm_connection = db_connect.connect_db()
-        self.dbwm_cursor = self.dbwm_connection.cursor(dictionary=True)
+        """Initialize the database connection helper."""
+        self.db_connect = DBConnect()
 
     def get_wm_month_consumption_by_property(
         self, community_code: str, property_name: str
-    ) -> list[dict[str, Any]] | None:
+    ) -> list[dict[str, Any]]:
         """Fetch monthly water consumption for a building and apartment.
+
+        Opens a short-lived connection for the query and closes it afterward.
 
         Args:
             community_code: Building / community identifier.
             property_name: Apartment or property name.
 
         Returns:
-            List of consumption records as dictionaries, or ``None`` if the
-            stored procedure returns no result set.
+            List of consumption records as dictionaries. Empty if no rows.
         """
-        self.dbwm_cursor.callproc(
-            "dbwaterc.sp_get_monthly_wc_by_property",
-            (community_code, property_name),
-        )
-        results = self.dbwm_cursor.stored_results()
-        for results in self.dbwm_cursor.stored_results():
-            return results.fetchall()
+        with self.db_connect.db_cursor() as cursor:
+            cursor.callproc(
+                "dbwaterc.sp_get_monthly_wc_by_property",
+                (community_code, property_name),
+            )
+            for result_set in cursor.stored_results():
+                return result_set.fetchall()
+        return []

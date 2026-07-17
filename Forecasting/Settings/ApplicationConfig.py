@@ -27,11 +27,11 @@ class ApplicationConfig:
         self.load_config_dev()
 
     def load_config_prod(self) -> None:
-        if (self.hostname == os.environ.get("hs_pro")):
+        if self.hostname == os.environ.get("hs_pro"):
             pass
 
     def load_config_dev(self) -> None:
-        if (self.hostname == os.environ.get("hs_dev")):
+        if self.hostname == os.environ.get("hs_dev"):
             self.api_token = os.environ.get("api-token")
             self.db_conection = {
                 "host": os.environ.get("db.host"),
