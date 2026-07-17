@@ -7,18 +7,22 @@ Loads historical data, builds a supervised time-series matrix, trains a
 feed-forward Keras model, and predicts the next month's consumption (m3).
 """
 
-from Forecasting.Models.DataModel.WaterConsumptionDataModel import WaterConsumptionDataModel
-from Forecasting.Helpers.Functions import Console
-from core import DatasetNotFoundError, InvalidPartitionError
 import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-from keras.layers import Dense, Activation, Flatten
-from sklearn.preprocessing import MinMaxScaler
-from keras.models import Sequential
-import numpy as np
-import pandas as pd
+
+# Must be set before importing keras/tensorflow to reduce log noise.
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+
 import matplotlib.pylab as plt
-import sys
+import pandas as pd
+from keras.layers import Dense, Flatten
+from keras.models import Sequential
+from sklearn.preprocessing import MinMaxScaler
+
+from core import DatasetNotFoundError, InvalidPartitionError
+from Forecasting.Helpers.Functions import Console
+from Forecasting.Models.DataModel.WaterConsumptionDataModel import (
+    WaterConsumptionDataModel,
+)
 
 
 class WCTrainPredict(object):

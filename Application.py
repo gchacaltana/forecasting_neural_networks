@@ -6,10 +6,12 @@ Parses command-line arguments and dispatches to the training/prediction
 workflow (e.g. ``python Application.py train``).
 """
 
+import sys
+
+from core import AppError, MissingArgumentError
 from Forecasting.Settings.ApplicationConfig import ApplicationConfig
 from WCTrainPredict import WCTrainPredict
-from core import AppError, MissingArgumentError
-import sys,os
+
 
 class Application(object):
     """Orchestrates CLI dispatch for water-consumption forecasting commands."""

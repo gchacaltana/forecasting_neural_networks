@@ -7,18 +7,19 @@ used throughout the training and prediction workflow.
 """
 from __future__ import annotations
 
+import os
 from datetime import datetime
 from logging import Logger
+
 import pytz
-import pandas as pd
-import os
+
 timezone = pytz.timezone("America/Lima")
 
 # Console Constants
-HYPHEN_LEN = 70
 COLOR_YELLOW = "\033[93m"
 END_COLOR = "\033[0m"
 COLOR_GREEN = "\033[92m"
+
 
 class Console():    
 

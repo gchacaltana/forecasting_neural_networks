@@ -9,12 +9,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from Forecasting.Settings.ApplicationConfig import ApplicationConfig
 import mysql.connector
-import sys
+
+from Forecasting.Settings.ApplicationConfig import ApplicationConfig
 
 if TYPE_CHECKING:
     from mysql.connector.connection import MySQLConnection
+
 
 class DBConnect():
     def __init__(self) -> None:

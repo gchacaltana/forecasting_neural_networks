@@ -5,8 +5,11 @@ Environment-based application configuration.
 Loads settings from ``.env`` (via python-dotenv) and exposes host-specific
 values such as database connection parameters for development and production.
 """
-import socket, os
+import os
+import socket
+
 from dotenv import load_dotenv
+
 
 class ApplicationConfig(object):
     def __init__(self) -> None:
