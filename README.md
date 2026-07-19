@@ -2,7 +2,32 @@
 
 ## Overview
 
-Demo application that implements the training process of a neural network for forecasting monthly drinking-water consumption of a household.
+Demo application that implements the training process of a neural network for forecasting monthly water consumption of a household.
+
+## Stack
+
+| Layer | Technology |
+| --- | --- |
+| Language | Python 3.9+ |
+| Deep learning | Keras 2.4.3, TensorFlow 2.4.0 |
+| Data | pandas, NumPy, scikit-learn |
+| Visualization | matplotlib |
+| Config | python-dotenv (`.env`) |
+
+Dependencies are declared in `pyproject.toml`.
+
+## Neural network architecture
+
+Feed-forward multilayer perceptron (MLP) for monthly water-consumption forecasting:
+
+- 1 hidden layer with `n` neurons (entered via console)
+- 1 output neuron
+- Activation: Hyperbolic Tangent (`tanh`), for values normalized to `[-1, 1]`
+- Optimizer: Adam
+- Loss: Mean Absolute Error (MAE)
+- Metric: Mean Squared Error (MSE)
+
+![Feed-forward neural network architecture for water-consumption forecasting](docs/images/feed-forward-neural-network-wc.png)
 
 ## Dataset
 
@@ -40,22 +65,9 @@ Top-level keys are building codes; nested keys are apartment names. Each record 
 
 Demo property: building `DEMO`, apartment `A101`.
 
-## Neural network configuration
-
-    Build a feed-forward neural network model.
-    Architecture:
-        * 1 hidden layer with "n" neurons (entered via console)
-        * 1 output neuron
-    Activation function: Hyperbolic Tangent (for normalized values in [-1, 1])
-    Optimizer: Adam
-    Loss metric: Mean Absolute Error (MAE)
-    Accuracy metric: Mean Squared Error (MSE)
-
-![Feed-forward neural network architecture for water-consumption forecasting](docs/images/feed-forward-neural-network-wc.png)
-
 ## Requirements
 
-Dependencies are declared in `pyproject.toml`. Install them with:
+Install runtime dependencies with:
 
 ```bash
 pip install -e .
