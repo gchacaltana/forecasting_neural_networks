@@ -1,7 +1,7 @@
 [project]
 name = "forecasting-neural-networks"
 version = "0.1.0"
-description = "Neural network forecasting for monthly drinking-water consumption"
+description = "Neural network forecasting for monthly water consumption"
 readme = "README.md"
 requires-python = ">=3.9"
 authors = [
