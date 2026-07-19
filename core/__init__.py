@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 """
 Shared application core package.
-
-Re-exports exceptions. Constants: ``core.constants``.
-Logging setup: ``core.logging_config``.
 """
 from __future__ import annotations
 

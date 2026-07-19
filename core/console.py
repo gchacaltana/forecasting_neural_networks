@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 """
 Console helpers for the interactive forecasting CLI.
-
-Provides timestamped output, highlighted section headers, and pause prompts
-used throughout the training and prediction workflow.
 """
 from __future__ import annotations
 

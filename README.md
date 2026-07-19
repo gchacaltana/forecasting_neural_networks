@@ -6,7 +6,15 @@ Demo application that implements the training process of a neural network for fo
 
 ## Dataset
 
-The dataset corresponds to drinking-water consumption (in m3) of a household. The variables are: Billing Date, Year, Month, Consumption M3, and Total Amount.
+The dataset corresponds to drinking-water consumption (in m3) of a household.
+It is loaded from `data/water_consumption.json` (override with `WC_DATA_FILE` in `.env`).
+
+JSON keys (English): `year`, `month`, `billing_date`, `m3`, `billed_amount`.
+
+Demo property available in the sample file:
+
+- Building: `DEMO`
+- Apartment: `A101`
 
 Sample data structure:
 
@@ -59,6 +67,8 @@ Sample data structure:
     Loss metric: Mean Absolute Error (MAE)
     Accuracy metric: Mean Squared Error (MSE)
 
+![Feed-forward neural network architecture for water-consumption forecasting](docs/images/feed-forward-neural-network-wc.png)
+
 ## Requirements
 
 Dependencies are declared in `pyproject.toml`. Install them with:
@@ -83,12 +93,21 @@ tensorflow 2.4.0
 scikit-learn 0.22.1
 matplotlib 3.1.3
 python-dotenv
-mysql-connector-python
 pytz
+```
+
+## Configuration
+
+Copy the environment template and edit local values (dataset path, NN defaults):
+
+```bash
+cp .env.example .env
 ```
 
 ## How to run
 
 ```bash
-python Application.py train
+python application.py train
 ```
+
+When prompted, you can use building `DEMO` and apartment `A101`.

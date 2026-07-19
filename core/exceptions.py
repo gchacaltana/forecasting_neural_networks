@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 """
 Custom exception hierarchy for domain and validation errors.
-
-All application-specific failures inherit from ``AppError`` so the CLI entry
-point can catch them uniformly and present a clear message to the user.
 """
 from __future__ import annotations
 

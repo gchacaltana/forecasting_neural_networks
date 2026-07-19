@@ -1,0 +1,524 @@
+{
+  "DEMO": {
+    "A101": [
+      {
+        "year": 2017,
+        "month": 11,
+        "billing_date": "2017-11-11",
+        "m3": 27.957,
+        "billed_amount": 42.63
+      },
+      {
+        "year": 2017,
+        "month": 12,
+        "billing_date": "2017-12-12",
+        "m3": 27.961,
+        "billed_amount": 32.09
+      },
+      {
+        "year": 2018,
+        "month": 1,
+        "billing_date": "2018-01-11",
+        "m3": 31.906,
+        "billed_amount": 41.17
+      },
+      {
+        "year": 2018,
+        "month": 2,
+        "billing_date": "2018-02-10",
+        "m3": 38.824,
+        "billed_amount": 47.41
+      },
+      {
+        "year": 2018,
+        "month": 3,
+        "billing_date": "2018-03-13",
+        "m3": 38.417,
+        "billed_amount": 60.94
+      },
+      {
+        "year": 2018,
+        "month": 4,
+        "billing_date": "2018-04-13",
+        "m3": 33.981,
+        "billed_amount": 67.16
+      },
+      {
+        "year": 2018,
+        "month": 5,
+        "billing_date": "2018-05-12",
+        "m3": 39.217,
+        "billed_amount": 78.19
+      },
+      {
+        "year": 2018,
+        "month": 6,
+        "billing_date": "2018-06-12",
+        "m3": 40.855,
+        "billed_amount": 76.69
+      },
+      {
+        "year": 2018,
+        "month": 7,
+        "billing_date": "2018-07-13",
+        "m3": 38.783,
+        "billed_amount": 72.53
+      },
+      {
+        "year": 2018,
+        "month": 8,
+        "billing_date": "2018-08-11",
+        "m3": 32.925,
+        "billed_amount": 68.48
+      },
+      {
+        "year": 2018,
+        "month": 9,
+        "billing_date": "2018-09-11",
+        "m3": 37.412,
+        "billed_amount": 80.35
+      },
+      {
+        "year": 2018,
+        "month": 10,
+        "billing_date": "2018-10-11",
+        "m3": 42.413,
+        "billed_amount": 77.3
+      },
+      {
+        "year": 2018,
+        "month": 11,
+        "billing_date": "2018-11-10",
+        "m3": 45.599,
+        "billed_amount": 85.96
+      },
+      {
+        "year": 2018,
+        "month": 12,
+        "billing_date": "2018-12-12",
+        "m3": 47.315,
+        "billed_amount": 122.53
+      },
+      {
+        "year": 2019,
+        "month": 1,
+        "billing_date": "2019-01-10",
+        "m3": 28.595,
+        "billed_amount": 75.69
+      },
+      {
+        "year": 2019,
+        "month": 2,
+        "billing_date": "2019-02-09",
+        "m3": 38.238,
+        "billed_amount": 105.69
+      },
+      {
+        "year": 2019,
+        "month": 3,
+        "billing_date": "2019-03-12",
+        "m3": 46.413,
+        "billed_amount": 130.57
+      },
+      {
+        "year": 2019,
+        "month": 4,
+        "billing_date": "2019-04-11",
+        "m3": 37.242,
+        "billed_amount": 104.81
+      },
+      {
+        "year": 2019,
+        "month": 5,
+        "billing_date": "2019-05-11",
+        "m3": 29.696,
+        "billed_amount": 83.58
+      },
+      {
+        "year": 2019,
+        "month": 6,
+        "billing_date": "2019-06-12",
+        "m3": 36.779,
+        "billed_amount": 103.57
+      },
+      {
+        "year": 2019,
+        "month": 7,
+        "billing_date": "2019-07-11",
+        "m3": 32.506,
+        "billed_amount": 79.34
+      },
+      {
+        "year": 2019,
+        "month": 8,
+        "billing_date": "2019-08-12",
+        "m3": 32.848,
+        "billed_amount": 88.09
+      },
+      {
+        "year": 2019,
+        "month": 9,
+        "billing_date": "2019-09-10",
+        "m3": 35.495,
+        "billed_amount": 100.91
+      },
+      {
+        "year": 2019,
+        "month": 10,
+        "billing_date": "2019-10-11",
+        "m3": 38.442,
+        "billed_amount": 109.31
+      },
+      {
+        "year": 2019,
+        "month": 11,
+        "billing_date": "2019-11-11",
+        "m3": 40.088,
+        "billed_amount": 115.42
+      },
+      {
+        "year": 2019,
+        "month": 12,
+        "billing_date": "2019-12-11",
+        "m3": 35.821,
+        "billed_amount": 103.13
+      },
+      {
+        "year": 2020,
+        "month": 1,
+        "billing_date": "2020-01-10",
+        "m3": 35.784,
+        "billed_amount": 103.02
+      },
+      {
+        "year": 2020,
+        "month": 2,
+        "billing_date": "2020-02-10",
+        "m3": 35.368,
+        "billed_amount": 101.8
+      },
+      {
+        "year": 2020,
+        "month": 3,
+        "billing_date": "2020-03-11",
+        "m3": 41.188,
+        "billed_amount": 118.52
+      },
+      {
+        "year": 2020,
+        "month": 4,
+        "billing_date": "2020-04-11",
+        "m3": 34.664,
+        "billed_amount": 92.39
+      },
+      {
+        "year": 2020,
+        "month": 5,
+        "billing_date": "2020-05-12",
+        "m3": 32.021,
+        "billed_amount": 90.84
+      },
+      {
+        "year": 2020,
+        "month": 6,
+        "billing_date": "2020-06-10",
+        "m3": 30.789,
+        "billed_amount": 88.68
+      },
+      {
+        "year": 2020,
+        "month": 7,
+        "billing_date": "2020-07-10",
+        "m3": 29.12,
+        "billed_amount": 87.96
+      },
+      {
+        "year": 2020,
+        "month": 8,
+        "billing_date": "2020-08-10",
+        "m3": 29.894,
+        "billed_amount": 91.42
+      },
+      {
+        "year": 2020,
+        "month": 9,
+        "billing_date": "2020-09-10",
+        "m3": 27.399,
+        "billed_amount": 78.88
+      },
+      {
+        "year": 2020,
+        "month": 10,
+        "billing_date": "2020-10-10",
+        "m3": 25.238,
+        "billed_amount": 72.69
+      },
+      {
+        "year": 2020,
+        "month": 11,
+        "billing_date": "2020-11-11",
+        "m3": 22.726,
+        "billed_amount": 65.43
+      },
+      {
+        "year": 2020,
+        "month": 12,
+        "billing_date": "2020-12-11",
+        "m3": 24.518,
+        "billed_amount": 69.88
+      },
+      {
+        "year": 2021,
+        "month": 1,
+        "billing_date": "2021-01-10",
+        "m3": 28.732,
+        "billed_amount": 81.89
+      },
+      {
+        "year": 2021,
+        "month": 2,
+        "billing_date": "2021-02-10",
+        "m3": 35.1,
+        "billed_amount": 100.04
+      },
+      {
+        "year": 2021,
+        "month": 3,
+        "billing_date": "2021-03-11",
+        "m3": 39.74,
+        "billed_amount": 113.26
+      },
+      {
+        "year": 2021,
+        "month": 4,
+        "billing_date": "2021-04-11",
+        "m3": 32.076,
+        "billed_amount": 91.42
+      },
+      {
+        "year": 2021,
+        "month": 5,
+        "billing_date": "2021-05-12",
+        "m3": 31.212,
+        "billed_amount": 88.95
+      },
+      {
+        "year": 2021,
+        "month": 6,
+        "billing_date": "2021-06-10",
+        "m3": 32.512,
+        "billed_amount": 92.66
+      },
+      {
+        "year": 2021,
+        "month": 7,
+        "billing_date": "2021-07-10",
+        "m3": 31.32,
+        "billed_amount": 89.26
+      },
+      {
+        "year": 2021,
+        "month": 8,
+        "billing_date": "2021-08-10",
+        "m3": 29.148,
+        "billed_amount": 83.07
+      },
+      {
+        "year": 2021,
+        "month": 9,
+        "billing_date": "2021-09-10",
+        "m3": 31.628,
+        "billed_amount": 90.14
+      },
+      {
+        "year": 2021,
+        "month": 10,
+        "billing_date": "2021-10-10",
+        "m3": 32.068,
+        "billed_amount": 91.39
+      },
+      {
+        "year": 2021,
+        "month": 11,
+        "billing_date": "2021-11-11",
+        "m3": 31.772,
+        "billed_amount": 90.55
+      },
+      {
+        "year": 2021,
+        "month": 12,
+        "billing_date": "2021-12-11",
+        "m3": 33.44,
+        "billed_amount": 95.3
+      },
+      {
+        "year": 2022,
+        "month": 1,
+        "billing_date": "2022-01-10",
+        "m3": 31.3,
+        "billed_amount": 89.2
+      },
+      {
+        "year": 2022,
+        "month": 2,
+        "billing_date": "2022-02-10",
+        "m3": 38.1,
+        "billed_amount": 108.59
+      },
+      {
+        "year": 2022,
+        "month": 3,
+        "billing_date": "2022-03-11",
+        "m3": 43.1,
+        "billed_amount": 122.84
+      },
+      {
+        "year": 2022,
+        "month": 4,
+        "billing_date": "2022-04-11",
+        "m3": 34.9,
+        "billed_amount": 99.47
+      },
+      {
+        "year": 2022,
+        "month": 5,
+        "billing_date": "2022-05-12",
+        "m3": 33.9,
+        "billed_amount": 96.61
+      },
+      {
+        "year": 2022,
+        "month": 6,
+        "billing_date": "2022-06-10",
+        "m3": 35.4,
+        "billed_amount": 100.89
+      },
+      {
+        "year": 2022,
+        "month": 7,
+        "billing_date": "2022-07-10",
+        "m3": 34.0,
+        "billed_amount": 96.9
+      },
+      {
+        "year": 2022,
+        "month": 8,
+        "billing_date": "2022-08-10",
+        "m3": 31.7,
+        "billed_amount": 90.34
+      },
+      {
+        "year": 2022,
+        "month": 9,
+        "billing_date": "2022-09-10",
+        "m3": 34.3,
+        "billed_amount": 97.75
+      },
+      {
+        "year": 2022,
+        "month": 10,
+        "billing_date": "2022-10-10",
+        "m3": 34.9,
+        "billed_amount": 99.47
+      },
+      {
+        "year": 2022,
+        "month": 11,
+        "billing_date": "2022-11-11",
+        "m3": 34.5,
+        "billed_amount": 98.33
+      },
+      {
+        "year": 2022,
+        "month": 12,
+        "billing_date": "2022-12-11",
+        "m3": 36.4,
+        "billed_amount": 103.74
+      },
+      {
+        "year": 2023,
+        "month": 1,
+        "billing_date": "2023-01-10",
+        "m3": 32.905,
+        "billed_amount": 93.78
+      },
+      {
+        "year": 2023,
+        "month": 2,
+        "billing_date": "2023-02-10",
+        "m3": 39.975,
+        "billed_amount": 113.93
+      },
+      {
+        "year": 2023,
+        "month": 3,
+        "billing_date": "2023-03-11",
+        "m3": 45.2,
+        "billed_amount": 128.82
+      },
+      {
+        "year": 2023,
+        "month": 4,
+        "billing_date": "2023-04-11",
+        "m3": 36.665,
+        "billed_amount": 104.5
+      },
+      {
+        "year": 2023,
+        "month": 5,
+        "billing_date": "2023-05-12",
+        "m3": 35.58,
+        "billed_amount": 101.4
+      },
+      {
+        "year": 2023,
+        "month": 6,
+        "billing_date": "2023-06-10",
+        "m3": 37.205,
+        "billed_amount": 106.03
+      },
+      {
+        "year": 2023,
+        "month": 7,
+        "billing_date": "2023-07-10",
+        "m3": 35.675,
+        "billed_amount": 101.67
+      },
+      {
+        "year": 2023,
+        "month": 8,
+        "billing_date": "2023-08-10",
+        "m3": 33.295,
+        "billed_amount": 94.89
+      },
+      {
+        "year": 2023,
+        "month": 9,
+        "billing_date": "2023-09-10",
+        "m3": 35.97,
+        "billed_amount": 102.51
+      },
+      {
+        "year": 2023,
+        "month": 10,
+        "billing_date": "2023-10-10",
+        "m3": 36.67,
+        "billed_amount": 104.51
+      },
+      {
+        "year": 2023,
+        "month": 11,
+        "billing_date": "2023-11-11",
+        "m3": 36.205,
+        "billed_amount": 103.18
+      },
+      {
+        "year": 2023,
+        "month": 12,
+        "billing_date": "2023-12-11",
+        "m3": 38.25,
+        "billed_amount": 109.01
+      }
+    ]
+  }
+}

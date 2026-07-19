@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 """
 Explicit logging configuration for the forecasting application.
-
-Use ``logging`` for errors and diagnostics; keep interactive UI messages on
-``Console``.
 """
 from __future__ import annotations
 

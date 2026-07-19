@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
-Interactive pipeline to train a neural network and forecast monthly
-drinking-water consumption for a household.
+Train a neural network and forecast monthly water consumption for a household.
 
 Loads historical data, builds a supervised time-series matrix, trains a
 feed-forward Keras model, and predicts the next month's consumption (m3).
@@ -10,13 +9,6 @@ feed-forward Keras model, and predicts the next month's consumption (m3).
 import os
 
 from core.constants import (
-    DEFAULT_ACTIVATION,
-    DEFAULT_EPOCHS,
-    DEFAULT_LOSS,
-    DEFAULT_OPTIMIZER,
-    DEFAULT_TEST_PERCENTAGE,
-    DEFAULT_TRAIN_PERCENTAGE,
-    DEFAULT_TRAIN_PREDICTIVE_MONTHS,
     FEATURE_RANGE,
     PLT_FIGURE_SIZE,
     PLT_STYLE,
@@ -34,10 +26,11 @@ from keras.models import Sequential
 from sklearn.preprocessing import MinMaxScaler
 
 from core import DatasetNotFoundError, InvalidPartitionError
-from Forecasting.Helpers.Functions import Console
-from Forecasting.Models.DataModel.WaterConsumptionDataModel import (
+from core.console import Console
+from forecasting.models.data_model.water_consumption_data_model import (
     WaterConsumptionDataModel,
 )
+from forecasting.neural_network.config import NeuralNetworkConfig
 
 
 class WCTrainPredict:
@@ -62,20 +55,15 @@ class WCTrainPredict:
         plt.style.use(PLT_STYLE)
 
     def set_config_neural_network(self) -> None:
-        self.epochs = DEFAULT_EPOCHS
-        self.train_predictive_months = DEFAULT_TRAIN_PREDICTIVE_MONTHS
-        # matrix_sl: supervised-learning matrix for TS (Time Series)
-        self.matrix_sl = None
-        self.train_percentage = DEFAULT_TRAIN_PERCENTAGE
-        self.test_percentage = DEFAULT_TEST_PERCENTAGE
+        """Initialize NN hyperparameters and empty runtime training state."""
+        self.nn_config = NeuralNetworkConfig()
+        # Runtime state (not configuration)
+        self.matrix_sl = None  # supervised-learning matrix for time series
         self.data_train = []
         self.data_test = []
         self.x_train, self.y_train = [], []
         self.x_val, self.y_val = [], []
-        self.model_nn = None  # neural network model
-        self.activation = DEFAULT_ACTIVATION
-        self.optimizer = DEFAULT_OPTIMIZER
-        self.loss = DEFAULT_LOSS
+        self.model_nn = None
 
     def run(self) -> None:
         """Run the full interactive train-and-predict pipeline."""
@@ -118,10 +106,12 @@ class WCTrainPredict:
 
     def get_dataset_water_consumption(self) -> None:
         """
-        Fetch water-consumption records from the database.
+        Fetch water-consumption records from the JSON dataset.
         """
         wcdm = WaterConsumptionDataModel()
-        self.wm_consumptions = wcdm.get_wm_month_consumption_by_property(self.building, self.apartment)
+        self.wm_consumptions = wcdm.get_wm_month_consumption_by_property(
+            self.building, self.apartment
+        )
         if len(self.wm_consumptions) == 0:
             raise DatasetNotFoundError(
                 f"Apartment {self.apartment} in building {self.building} "
@@ -134,10 +124,10 @@ class WCTrainPredict:
         """
         self.df = pd.DataFrame(
             self.wm_consumptions,
-            columns=['Anio', 'Mes', 'fecha_facturacion', 'm3', 'Facturado'],
+            columns=['year', 'month', 'billing_date', 'm3', 'billed_amount'],
         )
-        self.df['fecha_facturacion'] = pd.to_datetime(self.df['fecha_facturacion'])
-        self.df = self.df.set_index('fecha_facturacion')
+        self.df['billing_date'] = pd.to_datetime(self.df['billing_date'])
+        self.df = self.df.set_index('billing_date')
     
     def show_dataframe_wc(self) -> None:
         """
@@ -157,7 +147,7 @@ class WCTrainPredict:
         """
         Build and display the time series used for training.
         """
-        self.df = self.df.drop(['Anio', 'Mes', 'Facturado'], axis=1)
+        self.df = self.df.drop(['year', 'month', 'billed_amount'], axis=1)
         Console.info("TIME SERIES")
         Console.display(self.df)
         Console.stop_continue("[Press Enter to continue]")
@@ -182,10 +172,10 @@ class WCTrainPredict:
         predictor variables as entered via the console.
         """
         Console.highlight("4. CONVERT TIME SERIES TO SUPERVISED LEARNING MATRIX")
-        self.train_predictive_months = int(input("Enter the number of predictor variables: "))
+        self.nn_config.train_predictive_months = int(input("Enter the number of predictor variables: "))
         self.matrix_sl = self.convert_sequence_to_matrix(1)
         Console.info(
-            f"Time series matrix with {self.train_predictive_months} "
+            f"Time series matrix with {self.nn_config.train_predictive_months} "
             "predictor variables (training)"
         )
         Console.info()
@@ -213,7 +203,7 @@ class WCTrainPredict:
         """
         Add predictor variables to the matrix.
         """
-        for i in range(self.train_predictive_months, 0, -1):
+        for i in range(self.nn_config.train_predictive_months, 0, -1):
             self.matrix_cols.append(self.df_normalize.shift(i))
             self.matrix_cols_names += [f"v_pred(t-{i})"]
 
@@ -241,9 +231,9 @@ class WCTrainPredict:
         """
         Read train and test percentages from the console for the data split.
         """
-        self.train_percentage = int(input("Enter percentage for training data: "))
-        self.test_percentage = int(input("Enter percentage for test data: "))
-        percentage_sum = self.train_percentage + self.test_percentage
+        self.nn_config.train_percentage = int(input("Enter percentage for training data: "))
+        self.nn_config.test_percentage = int(input("Enter percentage for test data: "))
+        percentage_sum = self.nn_config.train_percentage + self.nn_config.test_percentage
         if percentage_sum != 100:
             raise InvalidPartitionError(
                 "The sum of the training and test percentages is invalid"
@@ -252,7 +242,7 @@ class WCTrainPredict:
     def set_data_partition(self) -> None:
         values = self.matrix_sl.values
         total_rows = len(values)
-        self.n_train = int(round(total_rows * (self.train_percentage / 100), 0))
+        self.n_train = int(round(total_rows * (self.nn_config.train_percentage / 100), 0))
         self.n_test = total_rows - self.n_train
         self.data_train = values[:self.n_train, :]
         self.data_test = values[self.n_train:, :]
@@ -268,11 +258,11 @@ class WCTrainPredict:
     def print_data_partition(self) -> None:
         Console.info()
         Console.info(
-            f"TRAINING ({self.train_percentage} %) : "
+            f"TRAINING ({self.nn_config.train_percentage} %) : "
             f"{self.n_train} observations (months)"
         )
         Console.info(
-            f"TEST ({self.test_percentage} %) : "
+            f"TEST ({self.nn_config.test_percentage} %) : "
             f"{self.n_test} observations (months)"
         )
 
@@ -288,20 +278,20 @@ class WCTrainPredict:
         """
         Console.highlight("6. CREATING THE NEURAL NETWORK")
         self.print_info_neural_network()
-        self.neurals_hidden_layer = int(input("Neurons for the input layer: "))
+        self.nn_config.hidden_neurons = int(input("Neurons for the input layer: "))
         Console.info()
         self.model_nn = Sequential()
         self.model_nn.add(
             Dense(
-                self.neurals_hidden_layer,
-                input_shape=(1, self.train_predictive_months),
-                activation=self.activation,
+                self.nn_config.hidden_neurons,
+                input_shape=(1, self.nn_config.train_predictive_months),
+                activation=self.nn_config.activation,
             )
         )
         self.model_nn.add(Flatten())
-        self.model_nn.add(Dense(1, activation=self.activation))
+        self.model_nn.add(Dense(1, activation=self.nn_config.activation))
         self.model_nn.compile(
-            loss=self.loss, optimizer=self.optimizer, metrics=["mse"]
+            loss=self.nn_config.loss, optimizer=self.nn_config.optimizer, metrics=["mse"]
         )
         self.model_nn.summary()
         Console.stop_continue("[Press Enter to continue]")
@@ -309,22 +299,22 @@ class WCTrainPredict:
     def print_info_neural_network(self) -> None:
         Console.info("+ 1 hidden layer with n neurons")
         Console.info("+ Output: 1 neuron")
-        Console.info("+ Activation function: Hyperbolic Tangent")
-        Console.info("+ Optimizer: Adam")
-        Console.info("+ Loss function: Mean Absolute Error (MAE)")
+        Console.info(f"+ Activation function: {self.nn_config.activation}")
+        Console.info(f"+ Optimizer: {self.nn_config.optimizer}")
+        Console.info(f"+ Loss function: {self.nn_config.loss}")
         Console.info("+ Accuracy metric: Mean Squared Error (MSE)")
         Console.info()
         Console.info()
 
     def execution_model_neural_network(self) -> None:
         Console.highlight("7. NEURAL NETWORK TRAINING")
-        self.epochs = int(input("Number of epochs: "))
+        self.nn_config.epochs = int(input("Number of epochs: "))
         self.model_nn.fit(
             self.x_train,
             self.y_train,
-            epochs=self.epochs,
+            epochs=self.nn_config.epochs,
             validation_data=(self.x_val, self.x_val),
-            batch_size=self.train_predictive_months,
+            batch_size=self.nn_config.train_predictive_months,
         )
         Console.info("\nTraining finished")
         Console.stop_continue("[Press Enter to view results]")
@@ -362,7 +352,7 @@ class WCTrainPredict:
         """
         Prepare the data used for prediction.
         """
-        number_last_months = self.train_predictive_months + 1
+        number_last_months = self.nn_config.train_predictive_months + 1
         last_months = self.df.tail(number_last_months)
         Console.info(
             f"\nUsing the last {number_last_months} months of water consumption"
@@ -380,7 +370,7 @@ class WCTrainPredict:
         """
         self.matrix_sl = self.convert_sequence_to_matrix(1)
         self.matrix_sl.drop(
-            self.matrix_sl.columns[[self.train_predictive_months]],
+            self.matrix_sl.columns[[self.nn_config.train_predictive_months]],
             axis=1,
             inplace=True,
         )
